@@ -1,0 +1,31 @@
+*{
+  padding: 0;
+  margin: 0;
+  border: 0;
+  outline: none;
+  box-sizing: border-box;
+  user-select: none;
+  color: var(--white);
+}
+
+:root{
+  --black: #121312;
+  --white: #F8F8F8;
+  --gray: #2E2E2E;
+  --light-gray: #706E6E;
+  --green: #099C27;
+  --green-75: #1edb2bab;
+  --correct: #07C80B;
+  --incorrect: #D62424;
+  --selected: #7B99FF;
+  --selected-50: #7B99FF80;
+}
+
+body{
+  background-image: url('/src/assets/background.jpg');
+  background-position-x: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  box-sizing: border-box;
+  min-height: 100vh;
+}

@@ -1,0 +1,82 @@
+.setup-title{
+  text-align: center;
+  font-family: 'Poppins';
+  letter-spacing: 1.5px;
+}
+
+.setup-title h1{
+  font-size: clamp(1.4rem, 1.2rem + 1vw, 2.1rem);
+  margin-top: 5rem;
+}
+
+.setup-title h2{
+  font-size: clamp(1rem, 0.4rem + 1vw, 1.8rem);
+}
+
+form{
+  width: clamp(20rem, 15rem + 30vw, 50rem);
+  background-color: rgba(0, 0, 0, 0.4);
+  margin: 0 auto;
+  margin-top: 2rem;
+  padding: 1rem clamp(1.5rem, 1rem + 5vw, 5rem);
+  padding-bottom: 4rem;
+  border-radius: 5px;
+  box-shadow: 0px 0px 11px 4px rgba(0, 0, 0 , 0.3);
+  -webkit-box-shadow: 0px 0px 11px 4px rgba(0, 0, 0 , 0.3);
+  -moz-box-shadow: 0px 0px 11px 4px rgba(0, 0, 0 , 0.3);
+}
+
+form label{
+  font-family: 'Inter';
+  font-size: clamp(1.1rem, 0.5rem + 1vw, 1.4rem);
+  display: block;
+  margin-top: clamp(1rem, 0.5rem + 1vw, 2rem);
+  margin-bottom: 0.5rem;
+}
+
+form select{
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  cursor: pointer;
+}
+
+form :is(input, select){
+  text-indent: 0.5rem;
+  width: 100%;
+  padding: 1rem;
+  font-family: 'Inter';
+  font-size: 1.1rem;
+  border-radius: 100px;
+  color: var(--black);
+  transition: all 200ms ease-in-out;
+}
+
+form input::-webkit-outer-spin-button,
+form input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+form input[type=number] {
+  -moz-appearance: textfield;
+}
+
+form option{
+  color: var(--black);
+}
+
+.setup-submit{
+  color: var(--white);
+  margin-top: 2rem;
+  border: none;
+  font-family: 'Unbounded';
+  background-color: var(--green);
+  cursor: pointer;
+  transition: all 300ms ease-in-out;
+}
+
+.setup-submit:hover{
+  box-shadow: 0px 0px 14px 3px var(--green-75);
+  -webkit-box-shadow: 0px 0px 14px 3px var(--green-75);
+  -moz-box-shadow: 0px 0px 14px 3px var(--green-75)
+}

@@ -1,0 +1,10 @@
+.quiz{
+  background-color: var(--black);
+  padding: 0 15vw;
+  padding-top: clamp(1rem, 0.5rem + 2vw, 3rem);
+}
+
+.quiz-submit{
+  text-align: center;
+  padding-bottom: 3rem;
+}

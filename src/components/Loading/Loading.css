@@ -1,0 +1,21 @@
+.loading-container{
+  height: 80vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.loading-container img{
+  display: inline-block;
+  width: clamp(7rem, 5rem + 4vw, 10rem);
+  animation: rotate-spinner 1s infinite;
+}
+
+@keyframes rotate-spinner {
+  0%{
+    rotate: 0;
+  }
+  100%{
+    rotate: 360deg;
+  }
+}
