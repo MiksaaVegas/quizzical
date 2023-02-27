@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { log } from '../../exports'
 import './Setup.css'
 
 export default function Setup(){
-  const {log} = console
   const {floor, random} = Math
   const navigate = useNavigate()
 
@@ -63,7 +63,7 @@ export default function Setup(){
     return selectionObject[selectionID]
   }
 
-  // Storing the form data in state
+  // Controling the form inputs
   const handleFormChange = ({id, value}) => {
     setFormData(oldData => ({
       ...oldData,

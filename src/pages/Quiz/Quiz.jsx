@@ -5,13 +5,13 @@ import Loading from "../../components/Loading/Loading"
 import Question from "../../components/Question/Question"
 import { nanoid } from 'nanoid'
 import ProceedButton from "../../components/ProceedButton/ProceedButton"
+import { log } from '../../exports'
 import './Quiz.css'
 
 export default function Quiz(){
-  const {log} = console
   const {random} = Math
   const {amount, category, difficulty, type} = useLocation().state
-  const APILink = `https://opentdb.com/api.php?amount=${amount}&category=${category}&difficulty=${difficulty}&type=${type}`
+  const databaseAPI = `https://opentdb.com/api.php?amount=${amount}&category=${category}&difficulty=${difficulty}&type=${type}`
   const navigate = useNavigate()
 
   // States
@@ -21,7 +21,7 @@ export default function Quiz(){
   useEffect(() => {
     const fetchQuestions = async () => {
       try {
-        const response = await fetch(APILink)
+        const response = await fetch(databaseAPI)
         let {response_code, results} = await response.json()
 
         if(response_code) throw(response_code)

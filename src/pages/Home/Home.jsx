@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import ProceedButton from '../../components/ProceedButton/ProceedButton'
+import { log } from '../../exports'
 import './Home.css'
 
 export default function Home(){
-  const {log} = console
   let date = new Date
   date = date.getFullYear()
 

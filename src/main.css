@@ -16,16 +16,18 @@
   --green: #099C27;
   --green-75: #1edb2bab;
   --correct: #07C80B;
+  --light-green: #87EF7A;
   --incorrect: #D62424;
   --selected: #7B99FF;
   --selected-50: #7B99FF80;
 }
 
-body{
-  background-image: url('/src/assets/background.jpg');
-  background-position-x: center;
-  background-size: cover;
-  background-repeat: no-repeat;
-  box-sizing: border-box;
+html{
+  overflow-x: hidden;
+  min-width: 100vw;
   min-height: 100vh;
+  background-image: url('/src/assets/background.jpg');
+  background-size: cover;
+  background-position-x: center;
+  background-repeat: no-repeat;
 }
