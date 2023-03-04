@@ -1,0 +1,82 @@
+.game-stats-card{
+  background-color: var(--gray-75);
+  backdrop-filter: blur(0.75rem);
+  border: 0.01rem solid var(--gray);
+  border-radius: 1rem;
+  margin: 1rem auto;
+  padding: 1rem;
+  max-width: 90vw;
+  transition: all 250ms ease-in-out;
+}
+
+.game-stats-card:hover{
+  border: 0.01rem solid var(--light-gray);
+}
+
+.game-stats-card p{
+  width: 20%;
+  text-align: center;
+  text-transform: capitalize;
+  line-height: 2rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;  
+  overflow: hidden;
+}
+
+.game-stats-category{
+  font-size: 1.1rem;
+  font-family: "Inter";
+  font-weight: 500;
+}
+
+.game-stats-difficulty{
+  font-family: 'Poppins';
+}
+
+.game-stats-answers,
+.game-stats-time{
+  font-family: 'Poppins';
+}
+
+.game-stats-answers span{
+  font-family: 'Inter';
+  font-weight: 600;
+}
+
+.game-stats-date{
+  font-family: 'Inter';
+  opacity: 0.9;
+}
+
+.game-stats-legend{
+  background-color: var(--black);
+  border: 0.01rem solid var(--incorrect);
+}
+
+.game-stats-desktop{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.game-stats-mobile{
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .game-stats-legend,
+  .game-stats-desktop{
+    display: none;
+  }
+
+  .game-stats-mobile{
+    display: block;
+  }
+
+  .game-stats-mobile p{
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+  }
+}

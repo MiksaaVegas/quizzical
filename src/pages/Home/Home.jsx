@@ -4,9 +4,10 @@ import ProceedButton from '../../components/ProceedButton/ProceedButton'
 import { log } from '../../exports'
 import './Home.css'
 
-export default function Home(){
+export default function Home({loggedUser}){
   let date = new Date
   date = date.getFullYear()
+  const link = loggedUser ? 'setup' : 'register'
 
   // States
   const [homepageStats, setHomepageStats] = useState({
@@ -52,7 +53,7 @@ export default function Home(){
           in {homepageStats.categories} Different Categories
         </h3>
       </div>
-      <Link to='/setup'>
+      <Link to={`/${link}`}>
         <ProceedButton value='Set up your quiz!' />
       </Link>
       <div className="copyright">

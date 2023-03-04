@@ -4,7 +4,7 @@ import { log } from '../../exports'
 import './Navbar.css'
 
 export default function Navbar(props){
-  const {loggedUser, setLoggedUser, loggedUserID} = props
+  const {loggedUser, setLoggedUser, loggedUserId} = props
 
   // States
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
@@ -35,7 +35,10 @@ export default function Navbar(props){
               loggedUser ?
               <>
                 <li onClick={() => setIsMobileMenuOpen(false)}>
-                  <Link to={`/profile/${loggedUserID}`}>My Profile</Link>
+                  <Link to='/setup'>Play a quiz!</Link>
+                </li>
+                <li onClick={() => setIsMobileMenuOpen(false)}>
+                  <Link to={`/profile/${loggedUserId}`}>My Profile</Link>
                 </li>
                 <li onClick={signOutUser}>
                   <Link to='/'>Sign Out</Link>
@@ -72,7 +75,10 @@ export default function Navbar(props){
               loggedUser ?
               <>
                 <li onClick={() => setIsMobileMenuOpen(false)}>
-                  <Link to={`/profile/${loggedUserID}`}>My Profile</Link>
+                  <Link to='/setup'>Play a quiz!</Link>
+                </li>
+                <li onClick={() => setIsMobileMenuOpen(false)}>
+                  <Link to={`/profile/${loggedUserId}`}>My Profile</Link>
                 </li>
                 <li onClick={signOutUser}>
                   <Link to='/'>Sign Out</Link>

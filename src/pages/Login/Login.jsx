@@ -4,13 +4,12 @@ import { useNavigate } from 'react-router-dom'
 import { log, APILink, fetchUsers} from '../../exports'
 import './Login.css'
 
-export default function Login({setLoggedUser}){
+export default function Login({setLoggedUser, loggedUser}){
   const navigate = useNavigate()
-  const loggedUserToken = localStorage.getItem('loggedUser')
   
   // Revoking access to the page for logged users
   useEffect(() => {
-    if(loggedUserToken) navigate('/')
+    if(loggedUser) navigate('/')
   }, [])
 
   // States
@@ -34,23 +33,28 @@ export default function Login({setLoggedUser}){
   // Logging the user in
   const loginUser = (token, id) => {
     setLoggedUser(token)
-    navigate('/profile/' + id)
+    navigate(`/profile/${id}`)
   }
 
   // Handling form submission
   const handleSubmission = async event => {
     event.preventDefault()
 
-    const usersData = await fetchUsers()
-    let userToken = '', userID
+    const usersData = await fetchUsers().catch(error => {
+      navigate('/', {
+        state: error,
+        replace: true,
+      })
+    })
+    let userToken = '', userId
 
     for (const user of usersData){
       if(user.username == formData.username){
         userToken = user.token
-        userID = user.id
+        userId = user.id
         
         if(user.password == formData.password){
-          loginUser(userToken, userID)
+          loginUser(userToken, userId)
         } else setErrors({
           username: [],
           password: [<p key={nanoid()} className='form-error'>

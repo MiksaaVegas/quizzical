@@ -4,13 +4,12 @@ import { Link, useNavigate } from 'react-router-dom'
 import { log, APILink, fetchUsers } from '../../exports'
 import './Register.css'
 
-export default function Register(){
+export default function Register({loggedUser}){
   const navigate = useNavigate()
-  const loggedUserToken = localStorage.getItem('loggedUser')
   
   // Revoking access to the page for logged users
   useEffect(() => {
-    if(loggedUserToken) navigate('/')
+    if(loggedUser) navigate('/')
   }, [])
 
   // States
@@ -33,7 +32,12 @@ export default function Register(){
       password: [],
       repeatPW: [],
     }
-    const usersData = await fetchUsers()
+    const usersData = await fetchUsers().catch(error => {
+      navigate('/', {
+        state: error,
+        replace: true,
+      })
+    })
 
     for(const field in formData) {
       if(formData[field].length < 8)
@@ -92,17 +96,24 @@ export default function Register(){
       if(isformValid){
         let data = {
           ...formData,
-          token: nanoid() + nanoid()
+          token: nanoid() + nanoid(),
+          playedGames: [],
+          numberOfPlayedGames: 0,
+          correctQuestions: 0,
+          wrongQuestions: 0,
+          averageQuetionsPerQuiz: 0,
+          favoriteCategory: null,
+          efficiency: 0
         }
+
         delete data.repeatPW
-        data = JSON.stringify(data)
   
-        fetch(APILink + '/users', {
+        fetch(`${APILink}users`, {
           method: 'POST',
           headers: {
             'Content-type': 'application/json'
           },
-          body: data
+          body: JSON.stringify(data)
         }).then(response => setRegisterSuccessful(true))
       }
     })

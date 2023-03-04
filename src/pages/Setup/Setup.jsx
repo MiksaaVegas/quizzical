@@ -1,11 +1,16 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { log } from '../../exports'
+import { fetchCategories, log } from '../../exports'
 import './Setup.css'
 
-export default function Setup(){
+export default function Setup({loggedUser}){
   const {floor, random} = Math
   const navigate = useNavigate()
+  
+  // Revoking access to the page for non-logged users
+  useEffect(() => {
+    if(!loggedUser) navigate('/')
+  }, [])
 
   // States
   const [categories, setCategories] = useState([])
@@ -13,26 +18,19 @@ export default function Setup(){
     amount: 10,
     category: '',
     difficulty: '',
-    type: ''
   })
 
   // Fetching the question categories
   useEffect(() => {
     const getCategories = async () => {
-      try{
-        const response = await fetch('https://opentdb.com/api_category.php')
-        const data = await response.json()
-        
-        if(response.status >= 300) throw(response.status)
-        setCategories(data.trivia_categories)
-      } catch(code){
+      setCategories(await fetchCategories().catch(error => {
         navigate('/notfound', {
+          state: error,
           replace: true,
-          state: [code, 'It seems like something went wrong. Please try again later']
         })
-      }
+      }))
     }
-    
+
     getCategories()
   }, [])
 
@@ -49,18 +47,8 @@ export default function Setup(){
       '3': 'hard'
     }
 
-    let selectionID = floor(random() * 3) + 1
-    return selectionObject[selectionID]
-  }
-
-  const randomType = () => {
-    const selectionObject = {
-      '1': 'multiple',
-      '2': 'boolean'
-    }
-
-    let selectionID = floor(random() * 2) + 1
-    return selectionObject[selectionID]
+    let selectionId = floor(random() * 3) + 1
+    return selectionObject[selectionId]
   }
 
   // Controling the form inputs
@@ -74,7 +62,10 @@ export default function Setup(){
   // Handling form submission
   const handleSubmission = e => {
     e.preventDefault()
-    navigate('/quiz', {replace: true, state: formData})
+    navigate('/quiz', {
+      replace: true,
+      state: formData
+    })
   }
 
   // Creating markup for the form options
@@ -95,7 +86,7 @@ export default function Setup(){
             type="number" 
             id='amount' 
             max='20' 
-            min='1'
+            min='5'
             value={formData.amount}
             placeholder='Ex. 10'
             onChange={event => handleFormChange(event.target)}
@@ -125,19 +116,6 @@ export default function Setup(){
             <option value="medium">Medium</option>
             <option value="hard">Hard</option>
             <option value={randomDifficulty()}>Random One</option>
-          </select>
-        </div>
-        <div>
-          <label htmlFor="type">Type</label>
-          <select
-            id="type" 
-            onChange={event => handleFormChange(event.target)}
-            value={formData.type}
-          >
-            <option value="">Any type</option>
-            <option value="multiple">Multiple Choice</option>
-            <option value="boolean">True/False</option>
-            <option value={randomType()}>Random One</option>
           </select>
         </div>
         <input type="submit" value="Generate Quiz" className='setup-submit' />

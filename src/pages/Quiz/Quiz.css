@@ -1,5 +1,6 @@
 .quiz{
-  background-color: var(--black);
+  height: 100vh;
+  overflow-y: scroll;
   padding: 0 15vw;
   padding-top: clamp(1rem, 0.5rem + 2vw, 3rem);
 }

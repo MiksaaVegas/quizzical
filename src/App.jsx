@@ -1,4 +1,4 @@
-import { Routes, Route } from 'react-router-dom'
+import { Routes, Route, useNavigate } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import { APILink, log, fetchUsers } from './exports'
 import Navbar from './components/Navbar/Navbar'
@@ -10,31 +10,41 @@ import Register from './pages/Register/Register'
 import Login from './pages/Login/Login'
 import Profile from './pages/Profile/Profile'
 import '../src/components/Form/Form.css'
+import AllGames from './pages/AllGames/AllGames'
 
 export default function App(){
+  const navigate = useNavigate()
+
   // States
   const [loggedUser, setLoggedUser] = useState(
     localStorage.getItem('loggedUser') || ''
   )
-  const [loggedUserID, setLoggedUserID] = useState(0)
+  const [loggedUserId, setLoggedUserId] = useState(0)
 
   // Verifying the user token
   const verifyToken = async () => {
-    const data = await fetchUsers()
-    let userFound = false
+    fetchUsers().then(data => {
+      let userFound = false
 
-    for (const user of data) {
-      if(user.token == loggedUser){
-        userFound = true
-        setLoggedUserID(user.id)
+      for (const user of data) {
+        if(user.token == loggedUser){
+          userFound = true
+          setLoggedUserId(user.id)
+        }
       }
-    }
 
-    if(!userFound) {
-      setLoggedUser('')
-      localStorage.setItem('loggedUser', '')
-      setLoggedUserID(0)
-    }
+      if(!userFound) {
+        setLoggedUser('')
+        localStorage.setItem('loggedUser', '')
+        setLoggedUserId(0)
+      }
+    }).catch(error => {
+      navigate('/notfound', {
+        state: error,
+        replace: true
+      })
+    })
+    
   }
 
   useEffect(() => {
@@ -49,15 +59,24 @@ export default function App(){
       <Navbar 
         loggedUser={loggedUser} 
         setLoggedUser={setLoggedUser}
-        loggedUserID={loggedUserID}
+        loggedUserId={loggedUserId}
       />
       <Routes>
-        <Route path='/' element={<Home />} />
-        <Route path='/setup' element={<Setup />} />
-        <Route path='/quiz' element={<Quiz />} />
-        <Route path='/register' element={<Register />} />
-        <Route path='/login' element={<Login setLoggedUser={setLoggedUser}/>} />
-        <Route path='/profile/:userID' element={<Profile />} />
+        <Route path='/' element={<Home loggedUser={loggedUser} />} />
+        <Route path='/setup' element={<Setup loggedUser={loggedUser} />} />
+        <Route path='/quiz' element={
+          <Quiz loggedUser={loggedUser} loggedUserId={loggedUserId}/>
+        } />
+        <Route path='/register' element={<Register loggedUser={loggedUser} />} />
+        <Route path='/login' element={
+          <Login setLoggedUser={setLoggedUser} loggedUser={loggedUser} />
+        } />
+        <Route path='/profile/:userId' element={
+          <Profile loggedUser={loggedUser} setLoggedUser={setLoggedUser} />
+        } />
+        <Route path='/allGames/:userId' element={
+          <AllGames loggedUser={loggedUser} />
+        } />
         <Route path='*' element={<NotFound />} />
       </Routes>
     </>

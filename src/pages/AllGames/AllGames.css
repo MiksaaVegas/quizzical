@@ -1,0 +1,11 @@
+.all-games{
+  height: 100vh;
+  overflow-y: scroll;
+}
+
+.all-games-heading{
+  text-align: center;
+  margin: 4rem 1rem;
+  font-size: clamp(1.3rem, 1.2rem + 2vw, 2.8rem);
+  font-family: 'Unbounded';
+}

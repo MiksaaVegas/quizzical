@@ -1,22 +1,21 @@
 .home{
-  margin: 30vh 1rem 0 1rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  padding: 0 0.5rem;
   font-family: 'Poppins';
   letter-spacing: 1.5px;
   text-align: center;
+  height: 90vh;
+  overflow-y: hidden;
 }
 
 .home h1{
   font-family: 'Unbounded';
   font-size: clamp(2.5rem, 10vw, 6rem);
   letter-spacing: 1px;
+  margin-top: 25vh;
 }
 
 .home h2{
-  font-size: clamp(1.2rem, 1vw + 1rem, 2rem);
+  font-size: clamp(1rem, 1vw + 0.9rem, 2rem);
 }
 
 .home h3{
@@ -26,9 +25,11 @@
 
 .copyright{
   font-size: clamp(0.3rem, 0.2rem + 1vw, 0.8rem);
-  position: absolute;
-  bottom: 1rem;
   opacity: 0.5;
+  position: absolute;
+  bottom: 5vh;
+  left: 0;
+  right: 0;
 }
 
 @media (max-width: 450px) {
