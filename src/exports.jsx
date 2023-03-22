@@ -52,3 +52,13 @@ export const fetchCategories = async () => {
     return Promise.reject(errorText)
   }
 }
+
+export const efficiencyColor = (value, maxValue) => {
+  const percentage = Math.floor(value / maxValue * 100)
+
+  if(percentage <= 20) return '#D62424'
+  else if(percentage <= 40) return '#EE5B00'
+  else if(percentage <= 60) return '#EEE307'
+  else if(percentage <= 80) return '#07C80B'
+  else return '#099C27'
+}

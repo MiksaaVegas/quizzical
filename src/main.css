@@ -12,15 +12,18 @@
   --black: #121312;
   --white: #F8F8F8;
   --gray: #2E2E2E;
-  --gray-75: #2E2E2Eab;
   --light-gray: #706E6E;
   --green: #099C27;
-  --green-75: #1edb2bab;
   --correct: #07C80B;
   --light-green: #87EF7A;
   --incorrect: #D62424;
   --selected: #7B99FF;
-  --selected-50: #7B99FF80;
+  --glitch-green: #1fa102;
+  --glitch-purple: #5e039e;
+  --light-gray-40: rgba(112, 110, 110, 0.4);
+  --gray-65: rgba(46, 46, 46, 0.65);
+  --green-75: rgba(30, 219, 43, 0.75);
+  --selected-50: rgba(123, 153, 255, 0.5);
 }
 
 html{

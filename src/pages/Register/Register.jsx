@@ -101,9 +101,20 @@ export default function Register({loggedUser}){
           numberOfPlayedGames: 0,
           correctQuestions: 0,
           wrongQuestions: 0,
-          averageQuetionsPerQuiz: 0,
+          questionsPerQuiz: 0,
+          timePlayed: {
+            minutes: 0,
+            seconds: 0
+          },
+          averageTime: {
+            minutes: 0,
+            seconds: 0
+          },
+          efficiency: 0,
+          gamesPlayedByCategories: {},
+          gamesPlayedByDifficulty: {},
           favoriteCategory: null,
-          efficiency: 0
+          favoriteDifficulty: null,
         }
 
         delete data.repeatPW

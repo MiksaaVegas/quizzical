@@ -1,3 +1,4 @@
+import { efficiencyColor } from '../../exports'
 import './GameStats.css'
 
 export default function GameStats(props){
@@ -9,20 +10,9 @@ export default function GameStats(props){
   const { floor } = Math
   const classes = isLegend ? 'game-stats-legend' : ''
 
-  // Choosing color for the answers percentage
-  const efficiencyColor = () => {
-    const percentage = floor(correctQuestionsNum / numOfQuestions * 100)
-
-    if(percentage <= 20) return '#D62424'
-    else if(percentage <= 40) return '#EE5B00'
-    else if(percentage <= 60) return '#EEE307'
-    else if(percentage <= 80) return '#07C80B'
-    else return '#099C27'
-  }
-
-  const styles = {
-    color: efficiencyColor(),
-    textShadow: `0 0 0.1rem ${efficiencyColor()}`
+    const styles = {
+    color: efficiencyColor(correctQuestionsNum, numOfQuestions),
+    textShadow: `0 0 0.1rem ${efficiencyColor(correctQuestionsNum, numOfQuestions)}`
   }
 
   return <div className={`game-stats-card ${classes}`}>
@@ -57,7 +47,7 @@ export default function GameStats(props){
         {
           isLegend ? numOfQuestions :
           <span>
-            <span style={{color: efficiencyColor()}}>
+            <span style={styles}>
               {correctQuestionsNum}
             </span> /&nbsp;
             {numOfQuestions}

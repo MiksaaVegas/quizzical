@@ -20,3 +20,12 @@ An interesting minigame I made to practice my React skills. The idea comes from 
 - Responsive layout for the new pages.
 - Fixed the redirection to the error page and improved error handling.
 - API changes, bugfixes and alogorithm changes for optimization.
+### 22.03.2023
+- New section on the profile page: Statistics
+- The new section features various stats like: efficiency, average time, favorite category and many more.
+- Change in the format of time played for each game.
+- Merged three navigation links (About, How to Play, OTDB) into one: About.
+- Glitch visual effect on the homepage.
+- Changed fallback layout for the recent games section.
+- Implemented a 3D loading animation.
+- Bugfixes, improved performance.

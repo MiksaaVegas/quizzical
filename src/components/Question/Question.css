@@ -19,7 +19,6 @@
   font-size: clamp(1rem, 0.75rem + 1vw, 1.5rem);
   letter-spacing: 1px;
   padding-bottom: 1rem;
-  overflow-y: scroll;
 }
 
 .answers{

@@ -14,7 +14,6 @@ export default function Navbar(props){
     setIsMobileMenuOpen(oldState => !oldState)
   }
 
-
   // Logging user out
   const signOutUser = () => {
     alert('Successfully signed out!')
@@ -23,44 +22,28 @@ export default function Navbar(props){
 
   return (
     <nav>
-      <div className="nav-desktop">
+      <div className="nav-menu">
         <Link to='/'>
           <h1 onClick={() => setIsMobileMenuOpen(false)}>
             Quizzical!
           </h1>
         </Link>
-        <div className="nav-menu">
+        <div className="nav-desktop">
           <ul>
             {
               loggedUser ?
               <>
-                <li onClick={() => setIsMobileMenuOpen(false)}>
-                  <Link to='/setup'>Play a quiz!</Link>
-                </li>
-                <li onClick={() => setIsMobileMenuOpen(false)}>
-                  <Link to={`/profile/${loggedUserId}`}>My Profile</Link>
-                </li>
-                <li onClick={signOutUser}>
-                  <Link to='/'>Sign Out</Link>
-                </li>
+                <li><Link to='/setup'>Play a quiz!</Link></li>
+                <li><Link to={`/profile/${loggedUserId}`}>My Profile</Link></li>
+                <li onClick={signOutUser}><Link to='/'>Sign Out</Link></li>
               </>
               :
               <>
-                <li onClick={() => setIsMobileMenuOpen(false)}>
-                  <Link to='/login'>Log in</Link>
-                </li>
-                <li onClick={() => setIsMobileMenuOpen(false)}>
-                  <Link to='/register'>Register</Link>
-                </li>
+                <li><Link to='/login'>Log in</Link></li>
+                <li><Link to='/register'>Register</Link></li>
               </>
             }
-            <li onClick={() => setIsMobileMenuOpen(false)}>
-              <Link to='/'>How to play?</Link>
-            </li>
-            <li><a href="https://opentdb.com/">OTDB</a></li>
-            <li onClick={() => setIsMobileMenuOpen(false)}>
-              <Link to='/'>About</Link>
-            </li>
+            <li><Link to='/about'>About</Link></li>
           </ul>
           <div className="nav-hamburger">
             <img src="/src/assets/hamburger.svg" onClick={handleClick}/>
@@ -94,9 +77,9 @@ export default function Navbar(props){
                 </li>
               </>
             }
-            <li><Link to='/'>How to play?</Link></li>
-            <li><a href="https://opentdb.com/">OTDB</a></li>
-            <li><Link to='/'>About</Link></li>
+            <li onClick={() => setIsMobileMenuOpen(false)}>
+              <Link to='/about'>About</Link>
+            </li>
           </ul>
         </div>
       }

@@ -5,11 +5,11 @@ import Loading from "../../components/Loading/Loading"
 import Question from "../../components/Question/Question"
 import { nanoid } from 'nanoid'
 import ProceedButton from "../../components/ProceedButton/ProceedButton"
-import { APILink, getUserById, log } from '../../exports'
+import { APILink, getUserById, log, fetchCategories } from '../../exports'
 import './Quiz.css'
 
 export default function Quiz({loggedUser, loggedUserId}){
-  const {random} = Math
+  const {random, floor} = Math
   const {amount, category, difficulty} = useLocation().state ?? 0
   const databaseAPI = `https://opentdb.com/api.php?amount=${amount}&category=${category}&difficulty=${difficulty}`
   const navigate = useNavigate()
@@ -20,12 +20,23 @@ export default function Quiz({loggedUser, loggedUserId}){
     if(!loggedUser) navigate('/')
   }, [])
 
+  // Getting the category name
+  useEffect(() => {
+    fetchCategories().then(results => {
+      if(!category) setCategoryName('Any')
+  
+      for (const result of results) 
+        if(category == result.id) setCategoryName(result.name)
+    })
+  }, [])
+
   // States
   const [questions, setQuestions] = useState(false)
   const [isQuizFinished, setIsQuizFinished] = useState(false)
   const [areAnswersChecked, setAreAnswersChecked] = useState(false)
   const [correctQuestionNum, setCorrectQuestionNum] = useState(0)
   const [wrongQuestionNum, setWrongQuestionNum] = useState(0)
+  const [categoryName, setCategoryName] = useState(null)
   const [seconds, setSeconds] = useState(0)
   const [minutes, setMinutes] = useState(0)
 
@@ -158,9 +169,6 @@ export default function Quiz({loggedUser, loggedUserId}){
   // Saving the game after checking the answers
   useEffect(() => {
     if(isQuizFinished){ 
-        const minutesPlayed = minutes < 10 ? `0${minutes}` : minutes
-        const secondsPlayed = seconds < 10 ? `0${seconds}` : seconds
-
         fetch(`${APILink}users/${loggedUserId}/games`, {
         method: 'POST',
         headers: {
@@ -173,11 +181,93 @@ export default function Quiz({loggedUser, loggedUserId}){
           category: category,
           difficulty: difficulty,
           playedAt: formattedDate(),
-          time: `${minutesPlayed}:${secondsPlayed}`,
+          time: `${minutes}m:${seconds}s`,
           customId: nanoid()
         })
       }).then(response => response.json().then(gameData => {
         getUserById(loggedUserId).then(userData => {
+          const { 
+            username, playedGames, numberOfPlayedGames, 
+            correctQuestions, wrongQuestions, questionsPerQuiz,
+            timePlayed, averageTime, efficiency, gamesPlayedByCategories,
+            gamesPlayedByDifficulty, favoriteCategory, favoriteDifficulty
+          } = userData
+          const newCorrectQuestions = Number(
+            correctQuestions) + correctQuestionNum
+          const newWrongQuestions = Number(
+            wrongQuestions) + wrongQuestionNum
+
+          const setFavoriteCategory = () => {
+            const tempData = {
+              ...gamesPlayedByCategories,
+              [categoryName]: (
+                gamesPlayedByCategories[categoryName] ?? 0
+              ) + 1
+            }
+            const keys = Object.keys(tempData)
+            let temp = tempData[keys[0]]
+
+            for (const key of keys) {
+              if(temp < tempData[key])
+                temp = key
+            }
+
+            if(temp == tempData[keys[0]])
+              return keys[0]
+
+            return temp
+          }
+
+          const setFavoriteDifficulty = () => {
+            const tempData = {
+              ...gamesPlayedByDifficulty,
+              [difficulty || 'any']: (
+                gamesPlayedByDifficulty[difficulty || 'any'] ?? 0
+              ) + 1
+            }
+            const keys = Object.keys(tempData)
+            let temp = tempData[keys[0]]
+            
+            for (const key of keys) {
+              if(temp < tempData[key])
+                temp = key
+            }
+
+            if(temp == tempData[keys[0]])
+              return keys[0]
+
+            return temp
+          }
+
+          const setAverageTime = () => {
+            const timeInSeconds = timePlayed.seconds + seconds + 
+              (timePlayed.minutes + minutes) * 60
+            const averageTimeInSeconds = floor(timeInSeconds / (Number(numberOfPlayedGames) + 1))
+            const resultMinutes = floor(averageTimeInSeconds / 60)
+            const resultSeconds = averageTimeInSeconds - (resultMinutes * 60)
+
+            return {
+              minutes: resultMinutes,
+              seconds: resultSeconds
+            }
+          }
+
+          const setTimePlayed = () => {
+            let resultMinutes, resultSeconds
+
+            resultMinutes = timePlayed.minutes + minutes
+            if(timePlayed.seconds + seconds > 59){
+              resultMinutes++
+              resultSeconds = (timePlayed.seconds + seconds) - 60
+            } else resultSeconds = timePlayed.seconds + seconds
+
+            return {
+              minutes: resultMinutes,
+              seconds: resultSeconds
+            }
+          }
+
+          // Modifying the user's stats
           fetch(`${APILink}users/${loggedUserId}`, {
             method: 'PUT',
             headers: {
@@ -186,9 +276,34 @@ export default function Quiz({loggedUser, loggedUserId}){
             body: JSON.stringify({
               ...userData,
               playedGames: [
-                ...userData.playedGames, gameData.customId
+                ...playedGames, gameData.customId
               ],
-              numberOfPlayedGames: Number(userData.numberOfPlayedGames) + 1
+              numberOfPlayedGames: Number(numberOfPlayedGames) + 1,
+              correctQuestions: newCorrectQuestions,
+              wrongQuestions: newWrongQuestions,
+              efficiency: floor(
+                newCorrectQuestions / (newCorrectQuestions + newWrongQuestions) * 100
+              ),
+              timePlayed: setTimePlayed(),
+              averageTime: setAverageTime(),
+              questionsPerQuiz: floor(
+                (correctQuestions + wrongQuestions + questions.length) / 
+                (numberOfPlayedGames + 1)
+              ),
+              gamesPlayedByCategories: {
+                ...gamesPlayedByCategories,
+                [categoryName]: (
+                  gamesPlayedByCategories[categoryName] ?? 0
+                ) + 1
+              },
+              favoriteCategory: setFavoriteCategory(),
+              gamesPlayedByDifficulty: {
+                ...gamesPlayedByDifficulty,
+                [difficulty || 'any']: (
+                  gamesPlayedByDifficulty[difficulty || 'any'] ?? 0
+                ) + 1
+              },
+              favoriteDifficulty: setFavoriteDifficulty(),
             })
           })
         })
@@ -203,15 +318,18 @@ export default function Quiz({loggedUser, loggedUserId}){
 
   // Timer
   useEffect(() => {
-    setTimeout(() => {
-      setSeconds(oldSeconds => {
-        if(oldSeconds == 59) {
-          setMinutes(oldMinutes => oldMinutes + 1)
-          return 0
-        }
-        else return oldSeconds + 1
-      })
-    }, 1000)
+    if(!isQuizFinished){
+      setTimeout(() => {
+        setSeconds(oldSeconds => {
+          if(oldSeconds == 59) {
+            setMinutes(oldMinutes => oldMinutes + 1)
+            return 0
+          }
+          else return oldSeconds + 1
+        })
+        return 1
+      }, 1000)
+    }
 
   }, [seconds])
 

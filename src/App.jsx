@@ -9,8 +9,9 @@ import Setup from './pages/Setup/Setup'
 import Register from './pages/Register/Register'
 import Login from './pages/Login/Login'
 import Profile from './pages/Profile/Profile'
-import '../src/components/Form/Form.css'
 import AllGames from './pages/AllGames/AllGames'
+import './Form.css'
+import About from './pages/About/About'
 
 export default function App(){
   const navigate = useNavigate()
@@ -71,6 +72,7 @@ export default function App(){
         <Route path='/login' element={
           <Login setLoggedUser={setLoggedUser} loggedUser={loggedUser} />
         } />
+        <Route path='/about' element={<About />} />
         <Route path='/profile/:userId' element={
           <Profile loggedUser={loggedUser} setLoggedUser={setLoggedUser} />
         } />

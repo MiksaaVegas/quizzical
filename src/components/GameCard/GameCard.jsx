@@ -1,4 +1,4 @@
-import { log } from '../../exports'
+import { log, efficiencyColor } from '../../exports'
 import './GameCard.css'
 
 export default function GameCard(props){
@@ -13,28 +13,17 @@ export default function GameCard(props){
   } = props
   const { floor } = Math
 
-  // Choosing color for the answers percentage
-  const efficiencyColor = () => {
-    const percentage = floor(correctQuestionsNum / numOfQuestions * 100)
-
-    if(percentage <= 20) return '#D62424'
-    else if(percentage <= 40) return '#EE5B00'
-    else if(percentage <= 60) return '#EEE307'
-    else if(percentage <= 80) return '#07C80B'
-    else return '#099C27'
-  }
-
-  const styles = {
-    color: efficiencyColor(),
-    textShadow: `0 0 0.25rem ${efficiencyColor()}`
+    const styles = {
+    color: efficiencyColor(correctQuestionsNum, numOfQuestions),
+    textShadow: `0 0 0.25rem ${efficiencyColor(correctQuestionsNum, numOfQuestions)}`
   }
 
   return (
     <div className='game-card'>
-      <h1>
+      <h2>
         <span style={styles}>{correctQuestionsNum}</span>/ 
         {numOfQuestions}
-      </h1>
+      </h2>
       <div className="game-card-info">
         <p>
           <img src="/src/assets/tag.svg" />
