@@ -1,5 +1,5 @@
 .game-stats-card{
-  background-color: var(--gray-65);
+  background-color: var(--gray-40);
   backdrop-filter: blur(0.75rem);
   border: 0.01rem solid var(--gray);
   border-radius: 1rem;

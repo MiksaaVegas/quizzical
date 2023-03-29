@@ -83,7 +83,7 @@ export default function AllGames({loggedUser}){
         return <GameStats
           key={id} 
           category={gameCategory}
-          difficulty={difficulty || 'Any'}
+          difficulty={difficulty || 'Mixed'}
           date={playedAt}
           correctQuestionsNum={correctQuestionsNum}
           wrongQuestionsNum={wrongQuestionsNum}

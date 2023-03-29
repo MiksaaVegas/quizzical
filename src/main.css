@@ -21,7 +21,7 @@
   --glitch-green: #1fa102;
   --glitch-purple: #5e039e;
   --light-gray-40: rgba(112, 110, 110, 0.4);
-  --gray-65: rgba(46, 46, 46, 0.65);
+  --gray-40: rgba(46, 46, 46, 0.4);
   --green-75: rgba(30, 219, 43, 0.75);
   --selected-50: rgba(123, 153, 255, 0.5);
 }

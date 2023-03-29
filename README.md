@@ -1,5 +1,11 @@
 # Quizzical
-An interesting minigame I made to practice my React skills. The idea comes from [freeCodeCamp's React Course](https://www.youtube.com/watch?v=bMknfKXIFA8&t), where is featured as the final project of the course. The application idea is the same, i just made it in my own taste. 
+An interesting minigame I made to practice my React skills. The idea comes from [freeCodeCamp's React Course](https://www.youtube.com/watch?v=bMknfKXIFA8&t), where is featured as the final project of the course. The application idea is the same, i just made it in my own taste.Later a lot features were added to improve the UX. The project is a competitor in a national competition.
+
+## Dependencies
+- React 
+- React Router
+- NanoID
+- React Confetti
 
 ## Releases
 ### 19.02.2023 (Initial Release)
@@ -17,7 +23,6 @@ An interesting minigame I made to practice my React skills. The idea comes from 
 - New Page: All Games - all user's games are visible to everybody (with account).
 - Time taken to finish the quiz is measured and will be used later in the user stats.
 - The image background is shown in the quiz, and a minor design change.
-- Responsive layout for the new pages.
 - Fixed the redirection to the error page and improved error handling.
 - API changes, bugfixes and alogorithm changes for optimization.
 ### 22.03.2023
@@ -29,3 +34,17 @@ An interesting minigame I made to practice my React skills. The idea comes from 
 - Changed fallback layout for the recent games section.
 - Implemented a 3D loading animation.
 - Bugfixes, improved performance.
+### 29.03.2023
+- Introduced an Experience Leveling system. The progress is displayed in the user's profile.
+- Pop-up notification for leveling up.
+- Quizzes award experience based on the difficulty (and a secret time bonus).
+- Statistics are locked until level 2.
+- Hard and Mixed difficulty is locked until level 3.
+- Random setup selections are locked until level 4.
+- Maximum amount of questions defaults to 10. Increased to 15 when level 6 reached.
+- Added a daily quiz challenge. Unlocks with level 5.
+- When a quiz is finished, the check answers button turns into 'Back to Home'.
+- Users can share profiles on Facebook and Twitter from the profile page.
+- Better responsivness for the setup page.
+- Fixed the design bug in the quiz.
+- Minor bugfixes.

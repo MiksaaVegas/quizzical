@@ -62,3 +62,28 @@ export const efficiencyColor = (value, maxValue) => {
   else if(percentage <= 80) return '#07C80B'
   else return '#099C27'
 }
+
+export const addXp = (addedXp, prevStats) => {
+  let result = {
+    xp: 0,
+    level: 0,
+    xpForLevelUp: 0
+  }
+
+  if(prevStats.xp + addedXp >= prevStats.xpForLevelUp){
+    result.level = prevStats.level + 1
+    result.xp = prevStats.xp + addedXp - prevStats.xpForLevelUp
+    result.xpForLevelUp = 30 + result.level ** 2
+
+    dispatchEvent(new CustomEvent('levelUp', {
+      detail: result.level
+    }))
+  } else{
+    result = {
+      ...prevStats,
+      xp: prevStats.xp + addedXp
+    }
+  }
+
+  return result
+}

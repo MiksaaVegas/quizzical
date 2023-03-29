@@ -5,20 +5,40 @@ import Loading from "../../components/Loading/Loading"
 import Question from "../../components/Question/Question"
 import { nanoid } from 'nanoid'
 import ProceedButton from "../../components/ProceedButton/ProceedButton"
-import { APILink, getUserById, log, fetchCategories } from '../../exports'
+import { APILink, getUserById, log, fetchCategories, addXp } from '../../exports'
 import './Quiz.css'
 
 export default function Quiz({loggedUser, loggedUserId}){
   const {random, floor} = Math
-  const {amount, category, difficulty} = useLocation().state ?? 0
+  const {amount, category, difficulty, isDaily} = useLocation().state ?? 0
   const databaseAPI = `https://opentdb.com/api.php?amount=${amount}&category=${category}&difficulty=${difficulty}`
   const navigate = useNavigate()
   const date = new Date()
-
+  
   // Revoking access to the page for non-logged users
+  // And also for users who already played the quiz
   useEffect(() => {
     if(!loggedUser) navigate('/')
-  }, [])
+    if(loggedUserId && isDaily) getUserById(loggedUserId).then(userData => {
+      if(userData.daily.lastPlayedOn == date.getUTCDate())
+        navigate('/')
+      else {
+        fetch(`${APILink}users/${loggedUserId}`, {
+          method: 'PUT',
+          headers: {
+            'Content-type': 'application/json'
+          },
+          body: JSON.stringify({
+            ...userData,
+            daily: {
+              ...userData.daily,
+              lastPlayedOn: date.getUTCDate()
+            }
+          })
+        })
+      }
+    })
+  }, [loggedUserId])
 
   // Getting the category name
   useEffect(() => {
@@ -39,6 +59,7 @@ export default function Quiz({loggedUser, loggedUserId}){
   const [categoryName, setCategoryName] = useState(null)
   const [seconds, setSeconds] = useState(0)
   const [minutes, setMinutes] = useState(0)
+  const [xpReward, setXpReward] = useState(0)
 
   const formattedDate = () => {
     let year = date.getFullYear()
@@ -145,12 +166,28 @@ export default function Quiz({loggedUser, loggedUserId}){
         oldQuestions.map(question => {
           if(question.selectedAnswer == question.correct_answer){
             setCorrectQuestionNum(oldNum => oldNum + 1)
+
+            // Counting the XP reward
+            switch(question.difficulty){
+              case 'easy':
+                setXpReward(oldValue => oldValue + 1)
+              break
+              case 'medium':
+                setXpReward(oldValue => oldValue + 2)
+              break
+              case 'hard':
+                setXpReward(oldValue => oldValue + 3)
+              break
+            }
+
+            if(minutes * 60 + seconds <= amount * 4)
+              setXpReward(oldValue => oldValue + 2)
+
             return {
               ...question,
               isCorrect: true
             }
-          }
-          else {
+          } else {
             setWrongQuestionNum(oldNum => oldNum + 1)
             return {
               ...question,
@@ -169,105 +206,8 @@ export default function Quiz({loggedUser, loggedUserId}){
   // Saving the game after checking the answers
   useEffect(() => {
     if(isQuizFinished){ 
-        fetch(`${APILink}users/${loggedUserId}/games`, {
-        method: 'POST',
-        headers: {
-          'Content-type': 'application/json'
-        },
-        body: JSON.stringify({
-          questions: questions,
-          correctQuestionsNum: correctQuestionNum,
-          wrongQuestionsNum: wrongQuestionNum,
-          category: category,
-          difficulty: difficulty,
-          playedAt: formattedDate(),
-          time: `${minutes}m:${seconds}s`,
-          customId: nanoid()
-        })
-      }).then(response => response.json().then(gameData => {
+      if(isDaily){
         getUserById(loggedUserId).then(userData => {
-          const { 
-            username, playedGames, numberOfPlayedGames, 
-            correctQuestions, wrongQuestions, questionsPerQuiz,
-            timePlayed, averageTime, efficiency, gamesPlayedByCategories,
-            gamesPlayedByDifficulty, favoriteCategory, favoriteDifficulty
-          } = userData
-          const newCorrectQuestions = Number(
-            correctQuestions) + correctQuestionNum
-          const newWrongQuestions = Number(
-            wrongQuestions) + wrongQuestionNum
-
-          const setFavoriteCategory = () => {
-            const tempData = {
-              ...gamesPlayedByCategories,
-              [categoryName]: (
-                gamesPlayedByCategories[categoryName] ?? 0
-              ) + 1
-            }
-            const keys = Object.keys(tempData)
-            let temp = tempData[keys[0]]
-
-            for (const key of keys) {
-              if(temp < tempData[key])
-                temp = key
-            }
-
-            if(temp == tempData[keys[0]])
-              return keys[0]
-
-            return temp
-          }
-
-          const setFavoriteDifficulty = () => {
-            const tempData = {
-              ...gamesPlayedByDifficulty,
-              [difficulty || 'any']: (
-                gamesPlayedByDifficulty[difficulty || 'any'] ?? 0
-              ) + 1
-            }
-            const keys = Object.keys(tempData)
-            let temp = tempData[keys[0]]
-            
-            for (const key of keys) {
-              if(temp < tempData[key])
-                temp = key
-            }
-
-            if(temp == tempData[keys[0]])
-              return keys[0]
-
-            return temp
-          }
-
-          const setAverageTime = () => {
-            const timeInSeconds = timePlayed.seconds + seconds + 
-              (timePlayed.minutes + minutes) * 60
-            const averageTimeInSeconds = floor(timeInSeconds / (Number(numberOfPlayedGames) + 1))
-            const resultMinutes = floor(averageTimeInSeconds / 60)
-            const resultSeconds = averageTimeInSeconds - (resultMinutes * 60)
-
-            return {
-              minutes: resultMinutes,
-              seconds: resultSeconds
-            }
-          }
-
-          const setTimePlayed = () => {
-            let resultMinutes, resultSeconds
-
-            resultMinutes = timePlayed.minutes + minutes
-            if(timePlayed.seconds + seconds > 59){
-              resultMinutes++
-              resultSeconds = (timePlayed.seconds + seconds) - 60
-            } else resultSeconds = timePlayed.seconds + seconds
-
-            return {
-              minutes: resultMinutes,
-              seconds: resultSeconds
-            }
-          }
-
-          // Modifying the user's stats
           fetch(`${APILink}users/${loggedUserId}`, {
             method: 'PUT',
             headers: {
@@ -275,44 +215,169 @@ export default function Quiz({loggedUser, loggedUserId}){
             },
             body: JSON.stringify({
               ...userData,
-              playedGames: [
-                ...playedGames, gameData.customId
-              ],
-              numberOfPlayedGames: Number(numberOfPlayedGames) + 1,
-              correctQuestions: newCorrectQuestions,
-              wrongQuestions: newWrongQuestions,
-              efficiency: floor(
-                newCorrectQuestions / (newCorrectQuestions + newWrongQuestions) * 100
-              ),
-              timePlayed: setTimePlayed(),
-              averageTime: setAverageTime(),
-              questionsPerQuiz: floor(
-                (correctQuestions + wrongQuestions + questions.length) / 
-                (numberOfPlayedGames + 1)
-              ),
-              gamesPlayedByCategories: {
+              ...addXp(xpReward * 3, {
+                xp: userData.xp,
+                level: userData.level,
+                xpForLevelUp: userData.xpForLevelUp
+              })
+            })
+          })
+        })
+      } else {
+        fetch(`${APILink}users/${loggedUserId}/games`, {
+          method: 'POST',
+          headers: {
+            'Content-type': 'application/json'
+          },
+          body: JSON.stringify({
+            questions: questions,
+            correctQuestionsNum: correctQuestionNum,
+            wrongQuestionsNum: wrongQuestionNum,
+            category: category,
+            difficulty: difficulty,
+            playedAt: formattedDate(),
+            time: `${minutes}m:${seconds}s`,
+            customId: nanoid()
+          })
+        }).then(response => response.json().then(gameData => {
+          getUserById(loggedUserId).then(userData => {
+            const { 
+              username, playedGames, numberOfPlayedGames, 
+              correctQuestions, wrongQuestions, questionsPerQuiz,
+              timePlayed, averageTime, efficiency, gamesPlayedByCategories,
+              gamesPlayedByDifficulty, favoriteCategory, favoriteDifficulty,
+              xp, level, xpForLevelUp,
+            } = userData
+  
+            // Setter functions for user's new stats
+            const newCorrectQuestions = Number(
+              correctQuestions) + correctQuestionNum
+  
+            const newWrongQuestions = Number(
+              wrongQuestions) + wrongQuestionNum
+  
+            const setFavoriteCategory = () => {
+              const tempData = {
                 ...gamesPlayedByCategories,
                 [categoryName]: (
                   gamesPlayedByCategories[categoryName] ?? 0
                 ) + 1
-              },
-              favoriteCategory: setFavoriteCategory(),
-              gamesPlayedByDifficulty: {
+              }
+              const keys = Object.keys(tempData)
+              let temp = tempData[keys[0]]
+  
+              for (const key of keys) {
+                if(temp < tempData[key])
+                  temp = key
+              }
+  
+              if(temp == tempData[keys[0]])
+                return keys[0]
+  
+              return temp
+            }
+  
+            const setFavoriteDifficulty = () => {
+              const tempData = {
                 ...gamesPlayedByDifficulty,
                 [difficulty || 'any']: (
                   gamesPlayedByDifficulty[difficulty || 'any'] ?? 0
                 ) + 1
+              }
+              const keys = Object.keys(tempData)
+              let temp = tempData[keys[0]]
+              
+              for (const key of keys) {
+                if(temp < tempData[key])
+                  temp = key
+              }
+  
+              if(temp == tempData[keys[0]])
+                return keys[0]
+  
+              return temp
+            }
+  
+            const setAverageTime = () => {
+              const timeInSeconds = timePlayed.seconds + seconds + 
+                (timePlayed.minutes + minutes) * 60
+              const averageTimeInSeconds = floor(timeInSeconds / (Number(numberOfPlayedGames) + 1))
+              const resultMinutes = floor(averageTimeInSeconds / 60)
+              const resultSeconds = averageTimeInSeconds - (resultMinutes * 60)
+  
+              return {
+                minutes: resultMinutes,
+                seconds: resultSeconds
+              }
+            }
+  
+            const setTimePlayed = () => {
+              let resultMinutes, resultSeconds
+  
+              resultMinutes = timePlayed.minutes + minutes
+              if(timePlayed.seconds + seconds > 59){
+                resultMinutes++
+                resultSeconds = (timePlayed.seconds + seconds) - 60
+              } else resultSeconds = timePlayed.seconds + seconds
+  
+              return {
+                minutes: resultMinutes,
+                seconds: resultSeconds
+              }
+            }
+  
+            // Modifying the user's stats
+            fetch(`${APILink}users/${loggedUserId}`, {
+              method: 'PUT',
+              headers: {
+                'Content-type': 'application/json'
               },
-              favoriteDifficulty: setFavoriteDifficulty(),
+              body: JSON.stringify({
+                ...userData,
+                playedGames: [
+                  ...playedGames, gameData.customId
+                ],
+                numberOfPlayedGames: Number(numberOfPlayedGames) + 1,
+                correctQuestions: newCorrectQuestions,
+                wrongQuestions: newWrongQuestions,
+                efficiency: floor(
+                  newCorrectQuestions / (newCorrectQuestions + newWrongQuestions) * 100
+                ),
+                timePlayed: setTimePlayed(),
+                averageTime: setAverageTime(),
+                questionsPerQuiz: floor(
+                  (correctQuestions + wrongQuestions + questions.length) / 
+                  (numberOfPlayedGames + 1)
+                ),
+                gamesPlayedByCategories: {
+                  ...gamesPlayedByCategories,
+                  [categoryName]: (
+                    gamesPlayedByCategories[categoryName] ?? 0
+                  ) + 1
+                },
+                favoriteCategory: setFavoriteCategory(),
+                gamesPlayedByDifficulty: {
+                  ...gamesPlayedByDifficulty,
+                  [difficulty || 'any']: (
+                    gamesPlayedByDifficulty[difficulty || 'any'] ?? 0
+                  ) + 1
+                },
+                favoriteDifficulty: setFavoriteDifficulty(),
+                ...addXp(xpReward, {
+                  xp: xp,
+                  level: level, 
+                  xpForLevelUp: xpForLevelUp
+                }),
+              })
             })
           })
+        })).catch(error => {
+          navigate('/notfound', {
+            state: error,
+            replace: true,
+          })
         })
-      })).catch(error => {
-        navigate('/notfound', {
-          state: error,
-          replace: true,
-        })
-      })
+      }
     }
   }, [areAnswersChecked])
 
@@ -340,10 +405,17 @@ export default function Quiz({loggedUser, loggedUserId}){
           {questionsMarkup}
           <div className="quiz-submit">
             <div className='submit-btn-wrapper'>
-              <ProceedButton 
-                value='Check Answers' 
-                whenClicked={() => setIsQuizFinished(true)}
-              />
+              {
+                !isQuizFinished ?
+                <ProceedButton 
+                  value='Check Answers ✔' 
+                  whenClicked={() => setIsQuizFinished(true)}
+                /> :
+                <ProceedButton 
+                  value='Back to Home 🔙' 
+                  whenClicked={() => navigate('/')}
+                />
+              }
             </div>
           </div>
         </section> :

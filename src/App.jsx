@@ -12,6 +12,8 @@ import Profile from './pages/Profile/Profile'
 import AllGames from './pages/AllGames/AllGames'
 import './Form.css'
 import About from './pages/About/About'
+import DailyQuiz from './pages/DailyQuiz/DailyQuiz'
+import LevelUp from './components/LevelUp/LevelUp'
 
 export default function App(){
   const navigate = useNavigate()
@@ -21,6 +23,7 @@ export default function App(){
     localStorage.getItem('loggedUser') || ''
   )
   const [loggedUserId, setLoggedUserId] = useState(0)
+  const [levelUpModal, setLevelUpModal] = useState(false)
 
   // Verifying the user token
   const verifyToken = async () => {
@@ -55,6 +58,9 @@ export default function App(){
     if(loggedUser) verifyToken()
   }, [loggedUser])
 
+  // The level up notification
+  addEventListener('levelUp', e => setLevelUpModal(e.detail))
+
   return (
     <>
       <Navbar 
@@ -64,7 +70,9 @@ export default function App(){
       />
       <Routes>
         <Route path='/' element={<Home loggedUser={loggedUser} />} />
-        <Route path='/setup' element={<Setup loggedUser={loggedUser} />} />
+        <Route path='/setup' element={
+          <Setup loggedUser={loggedUser} loggedUserId={loggedUserId} />
+        } />
         <Route path='/quiz' element={
           <Quiz loggedUser={loggedUser} loggedUserId={loggedUserId}/>
         } />
@@ -79,8 +87,17 @@ export default function App(){
         <Route path='/allGames/:userId' element={
           <AllGames loggedUser={loggedUser} />
         } />
+        <Route path='/daily' element={
+          <DailyQuiz loggedUser={loggedUser} loggedUserId={loggedUserId} />
+        }/>
         <Route path='*' element={<NotFound />} />
       </Routes>
+      {
+        levelUpModal ? <LevelUp 
+          level={levelUpModal} 
+          setLevelUpModal={setLevelUpModal} 
+        /> : ''
+      }
     </>
   )
 }

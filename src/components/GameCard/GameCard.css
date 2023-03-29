@@ -1,5 +1,5 @@
 .game-card{
-  background-color: var(--gray-65);
+  background-color: var(--gray-40);
   backdrop-filter: blur(0.25rem);
   padding: 1.5rem;
   border: 0.01rem solid var(--gray);

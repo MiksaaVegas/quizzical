@@ -115,6 +115,16 @@ export default function Register({loggedUser}){
           gamesPlayedByDifficulty: {},
           favoriteCategory: null,
           favoriteDifficulty: null,
+          level: 1,
+          xp: 0,
+          xpForLevelUp: 31,
+          daily: {
+            questions: 0,
+            category: 0,
+            difficulty: null,
+            lastPlayedOn: 0,
+            lastGeneratedOn: -1,
+          }
         }
 
         delete data.repeatPW

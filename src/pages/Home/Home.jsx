@@ -54,11 +54,12 @@ export default function Home({loggedUser}){
         </h3>
       </div>
       <Link to={`/${link}`}>
-        <ProceedButton value='Set up your quiz!' />
+        <ProceedButton value='Set up your quiz! 🔥' />
       </Link>
       <div className="copyright">
         <p>Powered by Mihail Kuzmanoski. All rights reserved &copy; {date}</p>
         <p>Photo by <a href="https://unsplash.com/@emilymorter?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Emily Morter</a> on <a href="https://unsplash.com/photos/8xAA0f9yQnE?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a></p>
+        <p>Sound Effect from <a href="https://pixabay.com/">Pixabay</a></p>
       </div>
     </section>
   )

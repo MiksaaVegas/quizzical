@@ -1,7 +1,7 @@
 .profile-section{
   padding: 3rem 2rem;
   height: 100vh;
-  overflow-y: auto;
+  overflow-y: scroll;
 }
 
 .profile-username{
@@ -21,17 +21,85 @@
   color: var(--light-gray);
 }
 
-.profile-username button{
-  position: absolute;
-  right: 0;
-  top: auto;
-  bottom: auto;
-  background-color: var(--incorrect);
-  padding: 0.5rem 1rem;
-  border-radius: 1rem;
+.level{
+  margin: 0.5rem 0;
+  display: flex;
+  justify-content: start;
+  align-items: center;
+}
+
+.level h2{
+  display: none;
+}
+
+.level p{
+  font-family: 'Poppins';
+  font-size: clamp(0.9rem, 0.4rem + 2vw, 1.2rem);
+}
+
+.xp-bar{
+  margin: 0 clamp(0.5rem, 0.2rem + 1vw, 1rem);
+  height: clamp(0.9rem, 0.4rem + 2vw, 1.1rem);
+  width: clamp(10rem, 8rem + 6vw, 18rem);
+  background-color: var(--white);
+  border-radius: 50rem;
+  overflow: hidden;
+}
+
+.xp-progress{
+  height: 100%;
+  border-radius: 1000rem;
+}
+
+.profile-share{
   font-size: 1rem;
   font-family: 'Poppins';
-  cursor: pointer;
+  font-weight: 300;
+  color: var(--gray-40);
+}
+
+.profile-share a{
+  font-family: 'Inter';
+  font-weight: 600;
+  transition: all ease-in-out 200ms;
+}
+
+.profile-share-facebook:hover{
+  color: #0668E1;
+}
+
+.profile-share-twitter:hover{
+  color: #00acee;
+}
+
+.daily-reminder{
+  font-size: clamp(0.7rem, 0.5rem + 1vw, 1rem);
+  font-family: 'Poppins';
+  font-weight: 300;
+  margin-top: 2rem;
+  border: 0.1rem solid var(--incorrect);
+  border-radius: 1rem;
+  padding: 1rem;
+  background-color: var(--gray-40);
+  backdrop-filter: blur(0.25rem);
+}
+
+.daily-not-exist span{
+  font-weight: 300;
+  color: var(--light-gray);
+}
+
+.daily-exist{
+  transition: all 200ms ease-in-out;
+}
+
+.daily-exist:hover{
+  text-shadow: 0 0 0.25rem var(--white);
+}
+
+.daily-exist span{
+  color: var(--correct);
+  text-shadow: 0 0 1rem var(--correct);
 }
 
 .history-of-games h1,
@@ -69,15 +137,19 @@
   transform: translateY(-1rem);
 }
 
+.stats-locked{
+  text-align: center;
+}
+
 .statistics-panel{
   border-radius: 1rem;
   padding: 2rem;
-  background-color: var(--gray-65);
+  background-color: var(--gray-40);
   backdrop-filter: blur(0.25rem);
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   grid-template-rows: 1fr;
-
+  border: 0.05rem solid var(--gray);
 }
 
 .statistics-panel .column{
@@ -225,5 +297,25 @@
 
   .column:nth-child(1) .bar-clip{
     height: 65%;
+  }
+
+  .level{
+    display: block;
+  }
+  
+  .level p{
+    display: none;
+  }
+
+  .level h2{
+    display: block;
+    font-family: 'Poppins';
+    font-weight: 400;
+    font-size: 1.2rem;
+    margin-bottom: 0.3rem;
+  }
+
+  .level .xp-bar{
+    margin: 0;
   }
 }
