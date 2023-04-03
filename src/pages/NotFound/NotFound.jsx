@@ -2,7 +2,7 @@ import { useLocation } from "react-router-dom"
 
 export default function NotFound(){
   const {log} = console
-  const {message} = useLocation().state
+  const {message} = useLocation().state ?? ''
   
   return (
     <>

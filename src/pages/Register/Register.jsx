@@ -45,9 +45,9 @@ export default function Register({loggedUser}){
           Please insert at least 8 characters!
         </p>)
 
-      if(formData[field].length > 32)
+      if(formData[field].length > 20)
         newErrors[field].push(<p key={nanoid()} className='form-error'>
-          Please insert at least 32 characters!
+          Please insert below 20 characters!
         </p>)
 
       if(!/^[a-zA-Z0-9]*$/.test(formData[field]))
@@ -124,7 +124,9 @@ export default function Register({loggedUser}){
             difficulty: null,
             lastPlayedOn: 0,
             lastGeneratedOn: -1,
-          }
+          },
+          trophies: 0,
+          highestTrophies: 0,
         }
 
         delete data.repeatPW
@@ -161,7 +163,7 @@ export default function Register({loggedUser}){
             <label htmlFor="password">Password</label>
             <input 
               id='password' 
-              type="text"
+              type="password"
               value={formData.password}
               onChange={event => handleChange(event.target)}
             />
@@ -169,7 +171,7 @@ export default function Register({loggedUser}){
             <label htmlFor="repeatPW">Confirm Password</label>
             <input 
               id='repeatPW' 
-              type="text"
+              type="password"
               value={formData.repeatPW}
               onChange={event => handleChange(event.target)}
             />

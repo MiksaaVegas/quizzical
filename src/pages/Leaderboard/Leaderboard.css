@@ -1,0 +1,25 @@
+.leaderboard-locked{
+  margin-top: 5rem;
+  text-align: center;
+  font-size: 2rem;
+  font-family: 'Inter';
+}
+
+.leaderboard-heading{
+  text-align: center;
+  margin: 4rem 2rem 0 2rem;
+}
+
+.leaderboard-heading h1{
+  font-size: clamp(2rem, 1.5rem + 2vw, 4rem);
+  font-family: 'Unbounded';
+  animation: glitch 1s cubic-bezier(0.7, 0.11, 0.34, 0.48) infinite alternate-reverse;
+}
+
+.leaderboard-subtitle{
+  font-size: clamp(1rem, 0.5rem + 1vw, 1.5rem);
+  font-family: 'Poppins';
+  letter-spacing: 0.5px;
+  margin-top: 1rem;
+  margin-bottom: 3rem;
+}

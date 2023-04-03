@@ -27,7 +27,7 @@ export default function Setup({loggedUser, loggedUserId}){
     if(loggedUserId){
       getUserById(loggedUserId).then(data => {
         setUserData(data)
-        if(data.level >= 6)
+        if(data.level >= 7)
           setMaxAmount(15)
       })
     }
@@ -90,9 +90,6 @@ export default function Setup({loggedUser, loggedUserId}){
       <div className="setup-title">
         <h1>Set up your quiz!</h1>
         <h2>Choose the settings of your wish.</h2>
-        <p className='anticheat-note'>
-          Note: DO NOT switch the tab nor resize the window, or you will activate our AntiCheat software!
-        </p>
       </div>
       <form onSubmit={handleSubmission}>
         <div>

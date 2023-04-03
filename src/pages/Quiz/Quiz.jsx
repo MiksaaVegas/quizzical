@@ -50,6 +50,15 @@ export default function Quiz({loggedUser, loggedUserId}){
     })
   }, [])
 
+  // Fetching all categories and their question count
+  useEffect(() => {
+    fetchCategories().then(data => setCategories(data))
+    fetch('https://opentdb.com/api_count_global.php').then(response => {
+      response.json().then(data => setQuestionCount(data.categories))
+    })
+  }, [])
+
+
   // States
   const [questions, setQuestions] = useState(false)
   const [isQuizFinished, setIsQuizFinished] = useState(false)
@@ -60,6 +69,9 @@ export default function Quiz({loggedUser, loggedUserId}){
   const [seconds, setSeconds] = useState(0)
   const [minutes, setMinutes] = useState(0)
   const [xpReward, setXpReward] = useState(0)
+  const [categories, setCategories] = useState(null)
+  const [trophiesReward, setTrophiesReward] = useState(0)
+  const [questionCount, setQuestionCount] = useState(null)
 
   const formattedDate = () => {
     let year = date.getFullYear()
@@ -164,7 +176,46 @@ export default function Quiz({loggedUser, loggedUserId}){
     const checkAnswers = () => {
       setQuestions(oldQuestions => (
         oldQuestions.map(question => {
-          if(question.selectedAnswer == question.correct_answer){
+          const isCorrect = question.selectedAnswer == question.correct_answer ?
+            true : false
+
+          // Calculating the trophies gained/lost
+          if(!isDaily){
+            const calculateTrophies = () => {
+              const categoryId = () => {
+                for (const item of categories) {
+                  if(question.category == item.name)
+                    return item.id
+                }
+              }
+  
+              const timeBonus = (8 * amount - (minutes * 60 + seconds) + 1) / 4
+              const correctness = isCorrect ? 1 : -1
+              const categoryWeight = questionCount[categoryId()].total_num_of_verified_questions
+              let questionPoints
+  
+              switch (question.difficulty) {
+                case 'easy':
+                  questionPoints = 1
+                  break
+                case 'medium':
+                  questionPoints = 2
+                  break
+                case 'hard':
+                  questionPoints = 3
+                  break
+              }
+  
+              let result = (categoryWeight * questionPoints * correctness) / 100 
+              if(isCorrect && (timeBonus > 0)) result += timeBonus
+  
+              return result
+            }
+  
+            setTrophiesReward(oldValue => oldValue + calculateTrophies())
+          }
+
+          if(isCorrect){
             setCorrectQuestionNum(oldNum => oldNum + 1)
 
             // Counting the XP reward
@@ -180,9 +231,9 @@ export default function Quiz({loggedUser, loggedUserId}){
               break
             }
 
-            if(minutes * 60 + seconds <= amount * 4)
+            if(minutes * 60 + seconds <= amount * 5)
               setXpReward(oldValue => oldValue + 2)
-
+            
             return {
               ...question,
               isCorrect: true
@@ -242,11 +293,10 @@ export default function Quiz({loggedUser, loggedUserId}){
         }).then(response => response.json().then(gameData => {
           getUserById(loggedUserId).then(userData => {
             const { 
-              username, playedGames, numberOfPlayedGames, 
-              correctQuestions, wrongQuestions, questionsPerQuiz,
-              timePlayed, averageTime, efficiency, gamesPlayedByCategories,
-              gamesPlayedByDifficulty, favoriteCategory, favoriteDifficulty,
-              xp, level, xpForLevelUp,
+              playedGames, numberOfPlayedGames, correctQuestions, 
+              wrongQuestions, timePlayed, gamesPlayedByCategories,
+              gamesPlayedByDifficulty, xp, level, xpForLevelUp, trophies,
+              highestTrophies
             } = userData
   
             // Setter functions for user's new stats
@@ -368,6 +418,10 @@ export default function Quiz({loggedUser, loggedUserId}){
                   level: level, 
                   xpForLevelUp: xpForLevelUp
                 }),
+                trophies: level >= 6 ? trophiesReward + trophies : 0,
+                highestTrophies: (
+                  level >= 6 && highestTrophies < trophiesReward + trophies
+                ) ? trophies + trophiesReward : highestTrophies
               })
             })
           })

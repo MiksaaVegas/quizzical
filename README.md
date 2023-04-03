@@ -48,3 +48,17 @@ An interesting minigame I made to practice my React skills. The idea comes from 
 - Better responsivness for the setup page.
 - Fixed the design bug in the quiz.
 - Minor bugfixes.
+### 03.04.2023
+- Password input fields are now censored.
+- Username and password length are limited to 20 characters.
+- Fixed the error message for character limit in the register form.
+- Removed the useless Anti-Cheat note.
+- Doubled the efficiency color steps (smoother coloring for the stats).
+- Glitch effect colors and animation changed.
+- 15 questions per quiz available from level 7.
+- Introduced trophy ranking system. Unlocks with level 6.
+- Non-daily quizzes award or reduce the balance of trophies, depending on the performance.
+- Rank titles (determined by trophies) prefix the username.
+- The Time Played stat is now changed to Highest Rank.
+- Added a scoreboard that features the players with most trophies.
+- Removed the About link.

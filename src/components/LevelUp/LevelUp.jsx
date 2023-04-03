@@ -15,7 +15,9 @@ export default function LevelUp({level, setLevelUpModal}){
     break
     case 5: message = 'Unlocked: Daily quiz! ⏳'
     break
-    case 6: message = 'Max questions per quiz: 15! ✔'
+    case 6: message = 'Unlocked: Trophies! 🏆'
+    break
+    case 7: message = 'Max questions per quiz: 15! ✔'
     break
     default: message = 'Continue to the next conquest! 🔥'
   }

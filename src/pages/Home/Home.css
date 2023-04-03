@@ -35,45 +35,6 @@
   right: 0;
 }
 
-@keyframes glitch {
-  40%{
-    text-shadow: 0.35rem 0.35rem 0.1rem var(--glitch-green), 
-                 -0.35rem -0.35rem 0.1rem var(--glitch-purple);
-  }
-
-  50%{
-    text-shadow: -0.35rem -0.35rem 0.1rem var(--glitch-green), 
-                 0.35rem 0.35rem 0.1rem var(--glitch-purple);
-  }
-
-  60%{
-    text-shadow: -0.35rem 0.35rem 0.1rem var(--glitch-green), 
-                 0.35rem -0.35rem 0.1rem var(--glitch-purple);
-  }
-
-  70%{
-    transform: skew(-5deg);
-    text-shadow: 0.35rem -0.35rem 0.1rem var(--glitch-green), 
-                 -0.35rem 0.35rem 0.1rem var(--glitch-purple);
-  }
-  
-  80%{
-    transform: skew(5deg);
-    text-shadow: -0.35rem 0.35rem 0.1rem var(--glitch-green), 
-                 -0.35rem 0.35rem 0.1rem var(--glitch-purple);
-  }
-
-  90%{
-    transform: skew(-5deg);
-    text-shadow: 0.35rem -0.35rem 0.1rem var(--glitch-green), 
-                 0.35rem -0.35rem 0.1rem var(--glitch-purple);
-  }
-
-  100%{
-    text-shadow: none;
-  }
-}
-
 @media (max-width: 450px) {
   .home h1{
     margin-bottom: 1rem;

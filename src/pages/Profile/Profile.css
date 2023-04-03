@@ -8,17 +8,24 @@
   display: flex;
   flex-wrap: wrap;
   align-items: center;
+  gap: 1rem;
 }
 
 .profile-username h1{
   font-family: 'Inter';
-  font-size: clamp(1.9rem, 1.5rem + 2vw, 2.5rem);
-  margin-right: 1rem;
+  font-size: clamp(1.4rem, 0.9rem + 2vw, 2.5rem);
+}
+
+.profile-username h1 span{
+  font-family: 'Unbounded';
+  color: #7b06ba;
+  text-shadow: 0 0 0.25rem #7b06ba;
 }
 
 .profile-username p{
   font-family: 'Poppins';
-  color: var(--light-gray);
+  color: var(--white);
+  font-size: 1.2rem;
 }
 
 .level{

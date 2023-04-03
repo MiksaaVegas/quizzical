@@ -11,9 +11,9 @@ import Login from './pages/Login/Login'
 import Profile from './pages/Profile/Profile'
 import AllGames from './pages/AllGames/AllGames'
 import './Form.css'
-import About from './pages/About/About'
 import DailyQuiz from './pages/DailyQuiz/DailyQuiz'
 import LevelUp from './components/LevelUp/LevelUp'
+import Leaderboard from './pages/Leaderboard/Leaderboard'
 
 export default function App(){
   const navigate = useNavigate()
@@ -80,7 +80,6 @@ export default function App(){
         <Route path='/login' element={
           <Login setLoggedUser={setLoggedUser} loggedUser={loggedUser} />
         } />
-        <Route path='/about' element={<About />} />
         <Route path='/profile/:userId' element={
           <Profile loggedUser={loggedUser} setLoggedUser={setLoggedUser} />
         } />
@@ -89,6 +88,9 @@ export default function App(){
         } />
         <Route path='/daily' element={
           <DailyQuiz loggedUser={loggedUser} loggedUserId={loggedUserId} />
+        }/>
+        <Route path='/leaderboard' element={
+          <Leaderboard loggedUser={loggedUser} loggedUserId={loggedUserId} />
         }/>
         <Route path='*' element={<NotFound />} />
       </Routes>

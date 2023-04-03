@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { useNavigate, useParams, Link } from 'react-router-dom'
 import GameCard from '../../components/GameCard/GameCard'
 import Loading from '../../components/Loading/Loading'
-import { efficiencyColor, fetchCategories, fetchGames, getUserById, log } from '../../exports'
+import { efficiencyColor, fetchCategories, fetchGames, getRankTitle, getUserById, log } from '../../exports'
 import './Profile.css'
 
 export default function Profile({loggedUser, setLoggedUser}){
@@ -11,6 +11,7 @@ export default function Profile({loggedUser, setLoggedUser}){
   const numberOfCards = window.innerWidth < 580 ? 3 : 5
   const windowLocation = window.location.href
   const date = new Date
+  const {floor} = Math
   
   // States
   const [previewUser, setPreviewUser] = useState(null)
@@ -107,8 +108,15 @@ export default function Profile({loggedUser, setLoggedUser}){
         previewUser ?
         <>
           <div className='profile-username'>
-            <h1>{previewUser.username}</h1>
-            <p>ID: {previewUser.id}</p>
+            <h1>
+              <span>{getRankTitle(previewUser.trophies)} </span>
+              {previewUser.username}
+            </h1>
+            {
+              previewUser.level >= 6 && <Link to={'/leaderboard'}>
+                <p><span>🏆</span> {floor(previewUser.trophies)}</p>
+              </Link>
+            }
           </div>
           <div className="level">
             <h2>XP Level {previewUser.level}</h2>
@@ -225,10 +233,8 @@ export default function Profile({loggedUser, setLoggedUser}){
                         : previewUser.favoriteDifficulty
                       }</span>
                     </p>
-                    <p>Time Played: 
-                      <span> {
-                        `${previewUser.timePlayed.minutes}m ${previewUser.timePlayed.seconds}s`
-                      }</span>
+                    <p>Highest rank: 
+                      <span> {getRankTitle(previewUser.highestTrophies) || 'None'}</span>
                     </p>
                   </div>
                 </div>

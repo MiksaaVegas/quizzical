@@ -34,6 +34,7 @@ export default function Navbar(props){
               loggedUser ?
               <>
                 <li><Link to='/setup'>Play a quiz!</Link></li>
+                <li><Link to='/leaderboard'>Top Players</Link></li>
                 <li><Link to={`/profile/${loggedUserId}`}>My Profile</Link></li>
                 <li onClick={signOutUser}><Link to='/'>Sign Out</Link></li>
               </>
@@ -43,7 +44,6 @@ export default function Navbar(props){
                 <li><Link to='/register'>Register</Link></li>
               </>
             }
-            <li><Link to='/about'>About</Link></li>
           </ul>
           <div className="nav-hamburger">
             <img src="/src/assets/hamburger.svg" onClick={handleClick}/>
@@ -63,6 +63,9 @@ export default function Navbar(props){
                 <li onClick={() => setIsMobileMenuOpen(false)}>
                   <Link to={`/profile/${loggedUserId}`}>My Profile</Link>
                 </li>
+                <li onClick={() => setIsMobileMenuOpen(false)}>
+                  <Link to='/leaderboard'>Top Players</Link>
+                </li>
                 <li onClick={signOutUser}>
                   <Link to='/'>Sign Out</Link>
                 </li>
@@ -77,9 +80,6 @@ export default function Navbar(props){
                 </li>
               </>
             }
-            <li onClick={() => setIsMobileMenuOpen(false)}>
-              <Link to='/about'>About</Link>
-            </li>
           </ul>
         </div>
       }

@@ -1,0 +1,68 @@
+.leaderboard-item{
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  width: clamp(30rem, 25rem + 15vw, 40rem);
+  margin: 1rem auto;
+  border: 0.1rem solid var(--light-gray-40);
+  border-radius: 1rem;
+  padding: 1rem 2rem;
+  background-color: var(--gray-40);
+  backdrop-filter: blur(0.2rem);
+  transition: all 200ms ease-in-out;
+  cursor: pointer;
+}
+
+.leaderboard-item:hover{
+  border: 0.1rem solid var(--light-gray);
+}
+
+.leaderboard-item p{
+  font-size: 1.3rem;
+  font-family: 'Inter';
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.leaderboard-item p:nth-child(1){
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.leaderboard-item-place{
+  font-family: 'Poppins';
+  font-weight: 300;
+}
+
+.leaderboard-item-rank{
+  font-family: 'Unbounded';
+  color: #7b06ba;
+  text-shadow: 0 0 0.25rem #7b06ba;
+}
+
+@media (max-width: 1024px) {
+  .leaderboard-item{
+    width: 90%;
+  }
+}
+
+@media (max-width: 768px) {
+  .leaderboard-item{
+    flex-direction: column;
+  }
+
+  .leaderboard-item p{
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 500px) {
+  .leaderboard-item{
+    padding: 1rem;
+    width: 100%;
+  }
+
+  .leaderboard-item-name{
+    display: block;
+  }
+}

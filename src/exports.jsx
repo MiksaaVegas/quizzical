@@ -56,11 +56,16 @@ export const fetchCategories = async () => {
 export const efficiencyColor = (value, maxValue) => {
   const percentage = Math.floor(value / maxValue * 100)
 
-  if(percentage <= 20) return '#D62424'
-  else if(percentage <= 40) return '#EE5B00'
-  else if(percentage <= 60) return '#EEE307'
-  else if(percentage <= 80) return '#07C80B'
-  else return '#099C27'
+  if(percentage <= 10) return '#c20c0c'
+  else if(percentage <= 20) return '#c23a0c'
+  else if(percentage <= 30) return '#c2670c'
+  else if(percentage <= 40) return '#c2b90c'
+  else if(percentage <= 50) return '#dceb10'
+  else if(percentage <= 60) return '#b8eb10'
+  else if(percentage <= 70) return '#8ceb10'
+  else if(percentage <= 80) return '#60eb10'
+  else if(percentage <= 90) return '#31d111'
+  else return '#179c08'
 }
 
 export const addXp = (addedXp, prevStats) => {
@@ -86,4 +91,21 @@ export const addXp = (addedXp, prevStats) => {
   }
 
   return result
+}
+
+export const getRankTitle = trophies => {
+  if(trophies < 300) return ''
+  else if(trophies < 500) return 'Rookie'
+  else if(trophies < 800) return 'Novice'
+  else if(trophies < 1000) return 'Apprentice'
+  else if(trophies < 1300) return 'Learner'
+  else if(trophies < 1600) return 'Explorer'
+  else if(trophies < 1800) return 'Adventurer'
+  else if(trophies < 2200) return 'Enthusiast'
+  else if(trophies < 2500) return 'Conoisseur'
+  else if(trophies < 2800) return 'Savant'
+  else if(trophies < 3000) return 'Expert'
+  else if(trophies < 3300) return 'Master'
+  else if(trophies < 3600) return 'Grand Master'
+  else return 'Quiz Wizard'
 }

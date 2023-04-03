@@ -90,7 +90,7 @@ export default function Login({setLoggedUser, loggedUser}){
           <label htmlFor="password">Password</label>
           <input 
             id='password' 
-            type="text"
+            type="password"
             value={formData.password}
             onChange={event => handleFormChange(event.target)}
           />
