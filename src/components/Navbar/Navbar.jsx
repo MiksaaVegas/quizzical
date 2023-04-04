@@ -46,7 +46,7 @@ export default function Navbar(props){
             }
           </ul>
           <div className="nav-hamburger">
-            <img src="/src/assets/hamburger.svg" onClick={handleClick}/>
+            <img src="/hamburger.svg" onClick={handleClick}/>
           </div>
         </div>
       </div>

@@ -62,3 +62,7 @@ An interesting minigame I made to practice my React skills. The idea comes from 
 - The Time Played stat is now changed to Highest Rank.
 - Added a scoreboard that features the players with most trophies.
 - Removed the About link.
+### 04.04.2023
+- Fixed the negative trophies bug.
+- Balanced the time influence on the trophy reward.
+- Got the routing ready for deployment.

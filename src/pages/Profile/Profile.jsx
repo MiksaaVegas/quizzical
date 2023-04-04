@@ -170,12 +170,12 @@ export default function Profile({loggedUser, setLoggedUser}){
                 previewUser.numberOfPlayedGames ? 
                 <Link to={`/allGames/${previewUserID}`}>
                   <div className="game-card game-card-last">
-                    <img src="/src/assets/rocket.svg" />
+                    <img src="/rocket.svg" />
                     <h3>See all</h3>
                   </div>
                 </Link> :
                 <div className="game-card game-card-last">
-                  <img src="/src/assets/emoji-sad.svg" />
+                  <img src="/emoji-sad.svg" />
                   <h4>No games</h4>
                 </div>
               }

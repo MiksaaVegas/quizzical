@@ -26,11 +26,11 @@ export default function LevelUp({level, setLevelUpModal}){
     <section className="level-up">
       <Confetti width={innerWidth} height={innerHeight} />
       <audio autoPlay={true}>
-        <source src="/src/assets/level-up.mp3" type="audio/mpeg" />
+        <source src="/level-up.mp3" type="audio/mpeg" />
       </audio>
       <div className="level-up-modal">
         <img 
-          src="/src/assets/close.svg" 
+          src="/close.svg" 
           onClick={() => setLevelUpModal(false)}
         />
         <h1>Well Done👏</h1>

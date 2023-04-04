@@ -418,7 +418,9 @@ export default function Quiz({loggedUser, loggedUserId}){
                   level: level, 
                   xpForLevelUp: xpForLevelUp
                 }),
-                trophies: level >= 6 ? trophiesReward + trophies : 0,
+                trophies: level >= 6 ? (
+                  trophies + trophiesReward > 0 ? trophiesReward + trophies : 0
+                ) : 0,
                 highestTrophies: (
                   level >= 6 && highestTrophies < trophiesReward + trophies
                 ) ? trophies + trophiesReward : highestTrophies

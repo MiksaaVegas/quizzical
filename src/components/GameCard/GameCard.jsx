@@ -26,19 +26,19 @@ export default function GameCard(props){
       </h2>
       <div className="game-card-info">
         <p>
-          <img src="/src/assets/tag.svg" />
+          <img src="/tag.svg" />
           <span title={category}>{category}</span>
         </p>
         <p>
-          <img src="/src/assets/hourglass.svg" />
+          <img src="/hourglass.svg" />
           <span>{time}</span>
         </p>
         <p>
-          <img src="/src/assets/bar-chart.svg" />
+          <img src="/bar-chart.svg" />
           <span>{difficulty}</span>
         </p>
         <p>
-          <img src="/src/assets/calendar.svg" />
+          <img src="/calendar.svg" />
           <span title={date}>{date}</span>
         </p>
       </div>
