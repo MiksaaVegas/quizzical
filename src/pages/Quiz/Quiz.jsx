@@ -189,7 +189,7 @@ export default function Quiz({loggedUser, loggedUserId}){
                 }
               }
   
-              const timeBonus = (8 * amount - (minutes * 60 + seconds) + 1) / 4
+              const timeBonus = 6 * amount - (minutes * 60 + seconds) > 0
               const correctness = isCorrect ? 1 : -1
               const categoryWeight = questionCount[categoryId()].total_num_of_verified_questions
               let questionPoints
@@ -207,7 +207,7 @@ export default function Quiz({loggedUser, loggedUserId}){
               }
   
               let result = (categoryWeight * questionPoints * correctness) / 100 
-              if(isCorrect && (timeBonus > 0)) result += timeBonus
+              if(isCorrect && timeBonus) result += 2
   
               return result
             }
