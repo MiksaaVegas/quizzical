@@ -1,5 +1,5 @@
 # Quizzical
-An interesting minigame I made to practice my React skills. The idea comes from [freeCodeCamp's React Course](https://www.youtube.com/watch?v=bMknfKXIFA8&t), where is featured as the final project of the course. The application idea is the same, i just made it in my own taste.Later a lot features were added to improve the UX. The project is a competitor in a national competition.
+An interesting minigame I made to practice my React skills. The idea comes from [freeCodeCamp's React Course](https://www.youtube.com/watch?v=bMknfKXIFA8&t), where is featured as the final project of the course. The application idea is the same, i just made it in my own taste. Later a lot features were added to improve the UX. The project was a competitor in a national computer programming competition and won a silver medal.
 
 ## Dependencies
 - React 
